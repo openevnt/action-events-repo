@@ -15,6 +15,8 @@ inputs:
     description: The root folder where events are stored
     required: true
     default: "./events"
+  env:
+    description: Environment variables to supply
 
 runs:
   using: composite
@@ -23,9 +25,8 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
     - shell: bash
-      run: npx @evnt/dev@latest static build
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npm exec -p github:openevnt/evnt#path:packages/dev -p tsx -- tsx ./node_modules/@evnt/dev/src/cli.ts static build
+      env: ${{ inputs.env }}
     - uses: actions/upload-pages-artifact@v3
       with:
         path: ./dist
