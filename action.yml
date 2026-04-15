@@ -22,8 +22,17 @@ runs:
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v3
+      with:
+          version: 9
     - shell: bash
-      run: npm exec -p github:openevnt/evnt#path:packages/dev -p tsx -- tsx ./node_modules/@evnt/dev/src/cli.ts static build
+      run: git clone https://github.com/openevnt/evnt.git /tmp/openevnt
+    - shell: bash
+      working-directory: /tmp/openevnt
+      run: pnpm install --frozen-lockfile
+    - shell: bash
+      run: pnpx tsx /tmp/openevnt/packages/dev/src/cli.ts
     - uses: actions/upload-pages-artifact@v3
       with:
         path: ./dist
