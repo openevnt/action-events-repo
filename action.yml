@@ -33,6 +33,6 @@ runs:
       run: pnpm install --frozen-lockfile
     - shell: bash
       run: pnpx tsx /tmp/openevnt/packages/dev/src/cli.ts
-    - uses: actions/upload-pages-artifact@v3
+    - uses: actions/upload-pages-artifact@v5
       with:
         path: ./dist
